@@ -1,0 +1,14 @@
+﻿node_modules
+dist
+.DS_Store
+*.log
+.env
+.env.local
+
+# Local build artifacts
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# Source report files (kept private)
+source/

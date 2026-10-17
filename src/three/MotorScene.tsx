@@ -110,6 +110,7 @@ export default function MotorScene({ progressRef, palette, theme, selected, onSe
       />
       <OrbitControls
         ref={controls}
+        enabled={!coarse}
         enablePan={false}
         enableRotate={!coarse}
         enableZoom={coarse || hovering}

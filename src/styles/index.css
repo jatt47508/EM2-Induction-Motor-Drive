@@ -160,6 +160,7 @@ main section:not(.explorer) { padding: clamp(3.5rem, 7vw, 5.5rem) 0; border-top:
 /* On touch devices, let the page scroll vertically over the 3D canvas
    (OrbitControls sets touch-action:none inline, which otherwise blocks scroll). */
 @media (pointer: coarse) {
+  .scene-canvas { pointer-events: none !important; }
   .scene-canvas canvas { touch-action: pan-y !important; }
 }
 .scene-overlay { position: absolute; inset: 0; pointer-events: none; padding: clamp(1rem, 3vw, 2.5rem); display: flex; }

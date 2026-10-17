@@ -157,6 +157,11 @@ main section:not(.explorer) { padding: clamp(3.5rem, 7vw, 5.5rem) 0; border-top:
 .explorer-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 .scene-wrap { position: absolute; inset: 0; background: var(--scene-bg); }
 .scene-canvas { position: absolute; inset: 0; }
+/* On touch devices, let the page scroll vertically over the 3D canvas
+   (OrbitControls sets touch-action:none inline, which otherwise blocks scroll). */
+@media (pointer: coarse) {
+  .scene-canvas canvas { touch-action: pan-y !important; }
+}
 .scene-overlay { position: absolute; inset: 0; pointer-events: none; padding: clamp(1rem, 3vw, 2.5rem); display: flex; }
 .caption { position: absolute; max-width: min(420px, 40vw); background: color-mix(in srgb, var(--surface) 88%, transparent); border: 1px solid var(--divider); border-radius: 14px; padding: 1rem 1.15rem; box-shadow: var(--shadow); opacity: 0; transition: opacity 320ms ease, transform 320ms ease; pointer-events: none; }
 .caption.is-on { opacity: 1; }
@@ -263,8 +268,14 @@ select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); ou
   .nav-link { padding: 0.6rem 0.7rem; }
   .nav-theme { margin: 0.4rem 0 0; align-self: flex-start; }
   .nav-brand-text small { display: none; }
-  .caption { max-width: min(320px, 78vw); }
-  .cap-0, .cap-1, .cap-2, .cap-3, .cap-4, .cap-5 { left: clamp(0.75rem, 3vw, 1.5rem); right: auto; top: auto; bottom: clamp(4.5rem, 12vh, 6rem); }
+  /* Keep the caption clear of the HUD: caption on top, controls at the bottom. */
+  .caption { max-width: min(340px, 88vw); }
+  .cap-0, .cap-1, .cap-2, .cap-3, .cap-4, .cap-5 { left: 0.75rem; right: 0.75rem; top: clamp(4.75rem, 11vh, 6.5rem); bottom: auto; }
+  .explorer-hud { left: 0.6rem; right: 0.6rem; bottom: 0.6rem; max-width: none; gap: 0.45rem 0.5rem; }
+  .explorer-hud .btn { padding: 0.45rem 0.65rem; font-size: 0.82rem; }
+  .explorer-hint { display: none; }
+  .part-info { left: 0.75rem; right: 0.75rem; bottom: 5.5rem; max-width: none; }
+  .back-to-top { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -73,6 +73,22 @@ function useViewportFit() {
   return k
 }
 
+function TouchRotateGuard({ coarse }: { coarse: boolean }) {
+  const controls = useThree(s => s.controls) as any
+  useEffect(() => {
+    if (!coarse || !controls) return
+    controls.enableRotate = false
+    const off = () => { controls.enableRotate = false }
+    window.addEventListener('pointerup', off)
+    window.addEventListener('pointercancel', off)
+    return () => {
+      window.removeEventListener('pointerup', off)
+      window.removeEventListener('pointercancel', off)
+    }
+  }, [coarse, controls])
+  return null
+}
+
 export default function MotorScene({ progressRef, palette, theme, selected, onSelect, playing, resetSignal, reducedMotion }: Props) {
   const controls = useRef<any>(null)
   const [hovering, setHovering] = useState(false)
@@ -84,6 +100,12 @@ export default function MotorScene({ progressRef, palette, theme, selected, onSe
   useEffect(() => {
     if (resetSignal > 0 && controls.current) controls.current.reset()
   }, [resetSignal])
+
+  // On touch devices, only rotate when the finger actually starts on the motor;
+  // touching elsewhere leaves the gesture to the page (scrolling).
+  const grabTouchRotate = () => {
+    if (coarse && controls.current) controls.current.enableRotate = true
+  }
 
   return (
     <Canvas
@@ -107,6 +129,7 @@ export default function MotorScene({ progressRef, palette, theme, selected, onSe
         playing={playing}
         reducedMotion={reducedMotion}
         onHover={setHovering}
+        onGrab={grabTouchRotate}
       />
       <OrbitControls
         ref={controls}
@@ -121,6 +144,7 @@ export default function MotorScene({ progressRef, palette, theme, selected, onSe
         makeDefault
       />
       <CameraFit controls={controls} k={fitK} />
+      <TouchRotateGuard coarse={coarse} />
     </Canvas>
   )
 }

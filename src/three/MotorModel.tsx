@@ -22,7 +22,6 @@ type Props = {
   playing: boolean
   reducedMotion: boolean
   onHover?: (hovering: boolean) => void
-  onGrab?: () => void
 }
 
 const AXIS = Math.PI / 2 // align cylinders (default +Y) to +X
@@ -64,7 +63,7 @@ function useMaterial(color: string, selected: boolean, base: THREE.MeshStandardM
   return mat
 }
 
-export default function MotorModel({ progressRef, palette, selected, onSelect, playing, reducedMotion, onHover, onGrab }: Props) {
+export default function MotorModel({ progressRef, palette, selected, onSelect, playing, reducedMotion, onHover }: Props) {
   const root = useRef<THREE.Group>(null)
   const spin = useRef(0)
   const groups = {
@@ -158,7 +157,6 @@ export default function MotorModel({ progressRef, palette, selected, onSelect, p
       scale={0.84}
       onPointerOver={e => { e.stopPropagation(); onHover?.(true) }}
       onPointerOut={() => onHover?.(false)}
-      onPointerDown={e => { e.stopPropagation(); onGrab?.() }}
     >
       {/* Housing shell + fins */}
       <group ref={groups.housing} onClick={stop(() => onSelect(selected === 'housing' ? null : 'housing'))}>
